@@ -1,13 +1,5 @@
-#import os
-#import sys
-#import threading
-#import ctypes
-#import winreg
-#import tkinker as tk
 from tkinter import messagebox
-#from cryptography.hazmat.primitives.kdf import Scrypt
 import scrypt
-#from pathlib import Path
 import secrets
 
 
