@@ -31,5 +31,5 @@ def decrypt_(victim):
     result.append(scrypt.decrypt(victim, salt))
     return result
     
-upd('hi.txt')
+upd('file.txt')
 print('decyption process finished, ty for waiting!')
