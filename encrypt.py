@@ -27,5 +27,5 @@ def encrypt_(victim):
       result.append(item)
   return result
     
-upd('hi.txt')
+upd('file.txt')
 print('encryption process finished, ty for waiting!')
