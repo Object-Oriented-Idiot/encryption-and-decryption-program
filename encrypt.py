@@ -1,22 +1,10 @@
-#import os
-#import sys
-#import threading
-#import ctypes
-#import winreg
-#import tkinker as tk
-from tkinter import messagebox
-#from cryptography.hazmat.primitives.kdf import Scrypt
 import scrypt
-#from pathlib import Path
 import secrets
-
 
 salt = secrets.token_bytes(16)
 file = open('salt.txt','wb')
 file.write(salt)
 file.close()
-
-file_suffixes = ['.txt', '.doc', '.xls', '.xlsx', '.pdf', '.jpg', '.png', '.mp3', '.mp4', '.zip', '.rar', '.7z', '.sql', '.db', '.cpp', '.html', '.css', '.js', ',json', '.xml', '.ppt', '.pptx']
 
 
 def upd(filename):
