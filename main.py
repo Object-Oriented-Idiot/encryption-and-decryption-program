@@ -1,5 +1,5 @@
 #!!! does not follow PEP8's recomendation on docstring and line length
-#todo never: the cryptographic implementation urself
+#todo soon: the cryptographic implementation urself
 
 """This program is able to take a file and en/decrypt its contents."""
 
