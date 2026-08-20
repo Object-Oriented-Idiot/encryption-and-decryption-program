@@ -10,7 +10,7 @@ from functools import wraps
 
 def check_password(password):
     """This function check's if the User's input matches the password provided.
-    Type: Function
+    
     Intended arguments: the password that will be used to en/decrypt the file of the user's choice
     Return values: True if User's input match password, False if it does not
     """
@@ -25,7 +25,6 @@ def check_password(password):
 def format_(function):
     """This decorator(function) notifies the user when the process of en/decryption starts and finished.
 
-    Type: Decorator
     Intended arguments: the encrypt function or the decrypt function
     Return values: Returns two messages about the progress each time it is called
     """
@@ -59,7 +58,6 @@ class FileConverter():
     def decrypt(self):
         """The function decrypts files contents of a given file.
     
-        Type: Function
         Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
         """       
         try:
@@ -103,7 +101,6 @@ class FileConverter():
     def encrypt(self):
         """The function encrypts files contents of a given file.
     
-        Type: Function
         Side effects: If any extra arguments are inserted, a message is outputed
         Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
         """
@@ -138,5 +135,4 @@ class FileConverter():
         except OSError as e:
             print(f'Error: {e.args}')
             return
-
 
