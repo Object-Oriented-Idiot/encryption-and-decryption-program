@@ -1,11 +1,8 @@
-#todo:
-#make password private
-#cli 
-#fix encrypt method
-#random shi idk
-
+#docstrings
+#try exept error handling
+#add *args and **kwargs things
 import scrypt
-import getpass
+from getpass import getpass
 from functools import wraps
 
 def check_password(password):
