@@ -1,5 +1,5 @@
-#i am PARANOID of code faliure and therefore put 22 exception catching branches...
 #!!! does not follow PEP8's recomendation on docstring and line length
+#todo never: the cryptographic implementation urself
 
 """This program is able to take a file and en/decrypt its contents."""
 
@@ -52,33 +52,27 @@ class FileConverter():
         """
         self.filename = filename 
         self.password = getpass('Please enter a password you can use to accsess your file.')
-        if not self.password:
-            self.password = getpass('Please enter a password you can use to accsess your file.')
+        while not self.password:
+            self.password = getpass('Please enter a password you can use to accsess your file which is not empty.')
         
     @format_
-    def decrypt(self, *args):
+    def decrypt(self):
         """The function decrypts files contents of a given file.
     
         Type: Function
-        Exceptions raised: FileNotFoundError, PermissionError, EOFError, OSError, Exception, scrypt.error
+        Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
         """       
         try:
             if check_password(self.password):
                 with open(self.filename, 'rb') as file:
                     contents = file.read()
         except FileNotFoundError:
-            print('Error: The file that you are trying to encrypt does not exist.')
+            print('Error: The file that you are trying to decrypt does not exist.')
             return
         except PermissionError:
             print('Error: The file does not seem to be compatible with reading.')
             return
-        except EOFError:
-            print('Error: File is empty.')
-            return
         except OSError as e:
-            print(f'Error: {e.args}')
-            return
-        except Exception as e:
             print(f'Error: {e.args}')
             return
             
@@ -89,27 +83,21 @@ class FileConverter():
                     print(f'Error: {e.args}')
                     return
                 
-            else:
-                print('file seems to be empty')
-                return
-            try:
-                with open(self.filename, 'wb') as file:
-                    file.write(new_contents)
-            except FileNotFoundError:
-                print('Error: The file that you are trying to encrypt does not exist.')
-                return
-            except PermissionError:
-                print('Error: The file does not seem to be compatible with reading.')
-                return
-            except EOFError:
-                print('Error: File is empty.')
-                return
-            except OSError as e:
-                print(f'Error: {e.args}')
-                return
-            except Exception as e:
-                print(f'Error: {e.args}')
-                return
+        else:
+            print('file seems to be empty')
+            return
+        try:
+            with open(self.filename, 'wb') as file:
+                file.write(new_contents)
+        except FileNotFoundError:
+            print('Error: The file that you are trying to decrypt does not exist.')
+            return
+        except PermissionError:
+            print('Error: The file does not seem to be compatible with reading.')
+            return
+        except OSError as e:
+            print(f'Error: {e.args}')
+            return
 
     @format_
     def encrypt(self):
@@ -117,7 +105,7 @@ class FileConverter():
     
         Type: Function
         Side effects: If any extra arguments are inserted, a message is outputed
-        Exceptions raised: FileNotFoundError, PermissionError, EOFError, OSError, Exception, scrypt.error
+        Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
         """
         try:
             with open(self.filename, 'rb') as file:
@@ -128,13 +116,7 @@ class FileConverter():
         except PermissionError:
             print('Error: The file does not seem to be compatible with reading.')
             return
-        except EOFError:
-            print('Error: File is empty.')
-            return
         except OSError as e:
-            print(f'Error: {e.args}')
-            return
-        except Exception as e:
             print(f'Error: {e.args}')
             return
             
@@ -153,13 +135,7 @@ class FileConverter():
         except PermissionError:
             print('Error: The file does not seem to be compatible with reading.')
             return
-        except EOFError:
-            print('Error: File is empty.')
-            return
         except OSError as e:
-            print(f'Error: {e.args}')
-            return
-        except Exception as e:
             print(f'Error: {e.args}')
             return
 
