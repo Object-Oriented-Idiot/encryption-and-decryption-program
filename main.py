@@ -1,6 +1,6 @@
 #!!! does not follow PEP8's recomendation on docstring and line length
-#todo soon: the cryptographic implementation urself
-
+#todo soon: change the implementation from scrypt to smth diffrent
+#waaaaaaaaaaaaah i want a labubu :< T^T
 """This program is able to take a file and en/decrypt its contents."""
 
 import scrypt
@@ -14,8 +14,8 @@ def check_password(password):
     Intended arguments: the password that will be used to en/decrypt the file of the user's choice
     Return values: True if User's input match password, False if it does not
     """
-    UI = getpass('Please input the password needed to view this file.')
-    if UI == password:
+    ui = getpass('Please input the password needed to view this file.')
+    if ui == password:
         return True
     else:
         print('Incorrect password.')
