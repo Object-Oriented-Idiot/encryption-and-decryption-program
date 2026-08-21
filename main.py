@@ -1,5 +1,4 @@
 #!!! does not follow PEP8's recomendation on docstring and line length
-#todo soon: change the implementation from scrypt to smth diffrent, what if encryption fails and the file contents r lost, rename file.type to file.type.encrypted, mix a salt into the password(??), do entire folders/multiple files
 #waaaaaaaaaaaaah i want a labubu :< T^T
 """This program is able to take a file and en/decrypt its contents."""
 
