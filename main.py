@@ -1,11 +1,12 @@
 #!!! does not follow PEP8's recomendation on docstring and line length
-#waaaaaaaaaaaaah i want a labubu :< T^T 
+#waaaaaaaaaaaaah i want another labubu :< T^T 
 #actually its not pep8/257 aligned never mind...
 
 # couldn't test it because I just changed OS to Kali, had no internet to install vs-code , and was using the basic text editor  and i cant spell anyways
 """This program is able to take a file and en/decrypt its contents."""
 
 import scrypt
+import copy
 from getpass import getpass
 from functools import wraps
 from abc import ABC, abstractmethod
@@ -77,16 +78,16 @@ class FileConverter(ABC):
             self.filename = self.new_filename
             self.encrypted = not self.encrypted
         except:
-            input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
-                if input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
-                             'help me my dog is chasing me on two feet becuse i ate its food and now it has red eyes im really scared',
-                             'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp']
-                      self.rename()
-                elif input in ['N', 'n', 'no', 'NO', 'No', 'nO']:
-                    return
-                else:
-                    print('input not recognised, not trying again)
-                    return
+            Input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
+            if Input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
+                         'help me my dog is chasing me on two feet becuse i ate its food and now it has red eyes im really scared',
+                         'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp']
+                  self.rename()
+            elif Input in ['N', 'n', 'no', 'NO', 'No', 'nO']:
+                  return
+            else:
+                  print('input not recognised, not trying again')
+                  return
         
     @abstractmethod #just experimenting, no subclass yet
     def __str__(self):
@@ -99,8 +100,9 @@ class FileConverter(ABC):
         Exceptions raised: FileNotFoundError, OSError,  scrypt.error
         """       
         try:
-            with self.path.open('rb') as file:
-                contents = file.read()
+             with self.path.open('rb') as file:
+                 contents = file.read()
+             self.second_copy = copy.deepcopy(contents)
         except FileNotFoundError:
             print('Error: The file that you are trying to decrypt does not exist.')
             return
@@ -111,8 +113,10 @@ class FileConverter(ABC):
                 with self.path.open('wb') as file:
                     file.write(new_contents)
             except scrypt.error as e:
-                    print(f'Error: {e.args}')
-                    return
+                print(f'Error: {e.args}')
+                with self.path.open('wb') as file:
+                    file.write(self.second_copy)
+                return
                 
         else:
             print('file seems to be empty')
@@ -120,7 +124,7 @@ class FileConverter(ABC):
         try:
             self.encrypted = False
             self.rename()
-        except FileNotFound as e:
+        except FileNotFoundError as e:
                 print(e.args)
 
     @format_
@@ -131,7 +135,8 @@ class FileConverter(ABC):
         """
         try:
             with self.path.open('rb') as file:
-                    contents = file.read()
+                contents = file.read()
+            self.second_copy = copy.deepcopy(contents)
         except FileNotFoundError:
             print('Error: The file that you are trying to encrypt does not exist.')
             return
@@ -140,21 +145,24 @@ class FileConverter(ABC):
             return
             
         try:
-            new_contents = scrypt.encrypt(contents, self.password) 
+            contents = scrypt.encrypt(contents, self.password) 
         except scrypt.error as e:
             print(f'Error: {e.args}')
             return
             
         try:
             with self.path.open('wb') as file:
-                file.write(new_contents)
+                file.write(contents)
         except OSError as e:
-            print(f'Error: {e.args}')
+            print(f"Error: {e.args}, attempting to restore file's original contents")
+            with self.path.open('wb') as file:
+                file.write(self.second_copy)
+            
             return
         try:
             self.encrypted = True
             self.rename()
-        except FileNotFound as e:
+        except FileNotFoundError as e:
                 print(e.args)
 
 
