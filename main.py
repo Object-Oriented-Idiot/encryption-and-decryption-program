@@ -100,7 +100,6 @@ class FileConverter():
     def encrypt(self):
         """The function encrypts files contents of a given file.
     
-        Side effects: If any extra arguments are inserted, a message is outputed
         Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
         """
         try:
