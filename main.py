@@ -1,24 +1,13 @@
 #!!! does not follow PEP8's recomendation on docstring and line length
 #waaaaaaaaaaaaah i want a labubu :< T^T
+#actually its not pep8/257 aligned never mind...
+
+# couldn't test it because I just changed OS to Kali, had no internet to install vs-code , and was using the basic text editor  and i cant spell anyways
 """This program is able to take a file and en/decrypt its contents."""
 
 import scrypt
 from getpass import getpass
 from functools import wraps
-
-
-def check_password(password):
-    """This function check's if the User's input matches the password provided.
-    
-    Intended arguments: the password that will be used to en/decrypt the file of the user's choice
-    Return values: True if User's input match password, False if it does not
-    """
-    ui = getpass('Please input the password needed to view this file.')
-    if ui == password:
-        return True
-    else:
-        print('Incorrect password.')
-        return False
         
 
 def format_(function):
@@ -57,17 +46,13 @@ class FileConverter():
     def decrypt(self):
         """The function decrypts files contents of a given file.
     
-        Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
+        Exceptions raised: FileNotFoundError, OSError,  scrypt.error
         """       
         try:
-            if check_password(self.password):
-                with open(self.filename, 'rb') as file:
-                    contents = file.read()
+            with open(self.filename, 'rb') as file:
+                contents = file.read()
         except FileNotFoundError:
             print('Error: The file that you are trying to decrypt does not exist.')
-            return
-        except PermissionError:
-            print('Error: The file does not seem to be compatible with reading.')
             return
         except OSError as e:
             print(f'Error: {e.args}')
@@ -83,24 +68,12 @@ class FileConverter():
         else:
             print('file seems to be empty')
             return
-        try:
-            with open(self.filename, 'wb') as file:
-                file.write(new_contents)
-        except FileNotFoundError:
-            print('Error: The file that you are trying to decrypt does not exist.')
-            return
-        except PermissionError:
-            print('Error: The file does not seem to be compatible with reading.')
-            return
-        except OSError as e:
-            print(f'Error: {e.args}')
-            return
 
     @format_
     def encrypt(self):
         """The function encrypts files contents of a given file.
     
-        Exceptions raised: FileNotFoundError, PermissionError, OSError, Exception, scrypt.error
+        Exceptions raised: FileNotFoundError, PermissionError, OSError, scrypt.error
         """
         try:
             with open(self.filename, 'rb') as file:
@@ -124,12 +97,6 @@ class FileConverter():
         try:
             with open(self.filename, 'wb') as file:
                 file.write(new_contents)
-        except FileNotFoundError:
-            print('Error: The file that you are trying to encrypt does not exist.')
-            return
-        except PermissionError:
-            print('Error: The file does not seem to be compatible with reading.')
-            return
         except OSError as e:
             print(f'Error: {e.args}')
             return
