@@ -34,6 +34,14 @@ class CustomError(Exception, metaclass=exceptions):
         self.errormsg = (' '.join(self.errormsg)).lower()
         super().__init__(self.errormsg)
 
+#does this work?
+#
+#justicefortuples
+#ERROR_NAME = ('FileTypeUnsupportedError', 'FileEmptyError', 'InputUnrecognisedError', 'ProcessingError', 'FileWritingError', 'FileIsAlreadyEncryptedError', 'FileIsNotEncryptedError')
+#
+#for a in range(7):
+#    class error_name[a](CustomError): pass
+  
 class FileTypeUnsupportedError(CustomError): pass
 class FileEmptyError(CustomError): pass
 class InputUnrecognisedError(CustomError): pass
@@ -61,6 +69,7 @@ def format_(function):
         return result
     return inner
 
+
 class FileConverter(ABC): 
     def __init__(self, filename):
         self.filename = filename 
@@ -69,10 +78,12 @@ class FileConverter(ABC):
             self.encrypted = True
         else:
             self.encrypted = False
+          
         if self.path.suffix not in SUPPORTED_FILE_ENDING_TYPES:
                 raise FileTypeUnsupportedError
         if not self.path.is_file():
                 raise FileNotFoundError
+          
         self.password = getpass('Please enter a password you can use to accsess your file.')
         while not self.password:
             self.password = getpass('Please enter a password you can use to accsess your file which is not empty.')
@@ -84,6 +95,7 @@ class FileConverter(ABC):
                 self.new_filename = self.path.stem + '.encrypted' + self.path.suffix
             else:
                 self.new_filename = self.path.stem.removesuffix('.encrypted') + self.path.suffix
+              
             try:
                 self.new_path = self.path.with_name(self.new_filename)
                 if self.new_path.exists():
@@ -93,8 +105,10 @@ class FileConverter(ABC):
                         self.new_filename = self.path.stem + str(x) + '.encrypted' + self.path.suffix
                         self.new_path = self.path.with_name(self.new_filename)
                 self.path.rename(self.new_path) 
+              
             self.path = self.new_path
             self.filename = self.new_filename
+          
         except OSError: 
             Input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
             if Input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
@@ -127,17 +141,19 @@ class FileConverter(ABC):
                     file.write(contents)
                     file.seek(0)
                     content_check = file.read()
+                  
                 if content_check != contents:
                          raise FileWritingError
+                  
                 with self.path.open('wb') as file:
                     file.write(contents)
                 self.encrypted = False
+              
             except (scrypt.error, FileWritingError) as Error:
                 print(f'Error: {Error.args}, attempting to restore original contents')
                 with self.path.open('wb') as file:
                     file.write(self.second_copy)
                 return
-                
         else:
             raise FileEmptyError
         self.rename()
@@ -147,6 +163,7 @@ class FileConverter(ABC):
 
         if self.path.stem.endswith('.encrypted'):
             raise FileIsAlreadyEncryptedError
+          
         try:
             with self.path.open('rb') as file:
                 contents = file.read() 
@@ -166,11 +183,13 @@ class FileConverter(ABC):
                 file.write(contents)
                 file.seek(0)
                 content_check = file.read()
+              
             if content_check != contents:
                  raise FileWritingError
             with self.path.open('wb') as file:
                 file.write(contents)
             self.encrypted = True
+          
         except (OSError, FileWritingError) as Error:
             print(f"Error: {Error.args}, attempting to restore file's original contents")
             with self.path.open('wb') as file:
@@ -178,11 +197,10 @@ class FileConverter(ABC):
             return
         self.rename()
 
+
 class MyFileConverter(FileConverter):
     def __str__(self):
         return str(self.path) + ' labubu'
 
+      
 #my (out of school)freinds just took photos of each other and shoved them in AI to make them bald and now they are crying about it AND I HAVE TO SOLVE THIS MESS
-
-
-
