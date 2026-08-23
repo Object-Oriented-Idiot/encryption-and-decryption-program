@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 types = ( '.txt', '.csv', '.json',
-          '.xml', '.docx', '.rtf',
+          '.xml', '.docx', '.rtf', 
           '.md', '.png', '.zip', 
           '.pdf') #used a tuple becuse i never use tuples normally and i dont want tuples to feel left out 
 
@@ -65,7 +65,7 @@ class FileConverter(ABC):
     def __init__(self, filename):
         self.filename = filename 
         self.path = Path(self.filename).resolve()
-        if self.path.stem.endswith('_encrypted'):
+        if self.path.stem.endswith('.encrypted'):
             self.encrypted = True
         else:
             self.encrypted = False
@@ -81,9 +81,9 @@ class FileConverter(ABC):
     def rename(self): 
         try:
             if self.encrypted:
-                self.new_filename = self.path.stem + '_encrypted' + self.path.suffix
+                self.new_filename = self.path.stem + '.encrypted' + self.path.suffix
             else:
-                self.new_filename = self.path.stem.removesuffix('_encrypted') + self.path.suffix
+                self.new_filename = self.path.stem.removesuffix('.encrypted') + self.path.suffix
             try:
                 self.new_path = self.path.with_name(self.new_filename)
                 self.path.rename(self.new_path) # and if destination alr exists?
