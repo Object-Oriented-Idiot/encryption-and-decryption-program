@@ -6,7 +6,7 @@
 print('this is a toy project which is not secure, do not test this on files you care about')
 
 import re
-import scrypt#change encryption type
+import scrypt
 import tempfile
 from getpass import getpass
 from functools import wraps
