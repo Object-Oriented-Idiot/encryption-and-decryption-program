@@ -3,8 +3,10 @@
 
 """This program is able to take a file and en/decrypt its contents."""
 
+print('this is a toy project which is not secure, do not test this on files you care about')
+
 import re
-import scrypt#change encryption type!!!
+import scrypt#change encryption type
 import tempfile
 from getpass import getpass
 from functools import wraps
@@ -12,10 +14,10 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 
-types = ( '.txt', '.csv', '.json',
-          '.xml', '.docx', '.rtf', 
-          '.md', '.png', '.zip', 
-          '.pdf') #used a tuple becuse i never use tuples normally and i dont want tuples to feel left out 
+SUPPORTED_FILE_ENDING_TYPES = ( '.txt', '.csv', '.json',
+                                '.xml', '.docx', '.rtf', 
+                                '.md', '.png', '.zip', 
+                                '.pdf') #used a tuple becuse i never use tuples normally and i dont want tuples to feel left out 
 
 class exceptions(type): #im bored ok?
     list_of_custom_exceptions = []
@@ -37,6 +39,8 @@ class FileEmptyError(CustomError): pass
 class InputUnrecognisedError(CustomError): pass
 class ProcessingError(CustomError): pass
 class FileWritingError(CustomError): pass
+class FileIsAlreadyEncryptedError(CustomError): pass
+class FileIsNotEncryptedError(CustomError): pass
 
 
 
@@ -50,10 +54,10 @@ def format_(function):
         print(f'{function.__name__.capitalize()}ion process started- this may take some time.')
         try:
             result = function(self)
-         except:
-             raise ProcessingError
+        except Exception as Error:
+            raise ProcessingError from Error
         finally:
-            print(f'{function.__name__.capitalize()}ion process finished- thank you for waiting.')
+            print(f'{function.__name__.capitalize()}ion process ended- thank you for waiting.')
         return result
     return inner
 
@@ -69,7 +73,7 @@ class FileConverter(ABC):
             self.encrypted = True
         else:
             self.encrypted = False
-        if self.path.suffix not in types:
+        if self.path.suffix not in SUPPORTED_FILE_ENDING_TYPES:
                 raise FileTypeUnsupportedError
         if not self.path.is_file():
                 raise FileNotFoundError
@@ -82,20 +86,19 @@ class FileConverter(ABC):
         try:
             if self.encrypted:
                 self.new_filename = self.path.stem + '.encrypted' + self.path.suffix
-                      if self.new_path.exists:
-                          while self.new_path.exists:
-                                    for x in randge
-                             self.new_filename = self.path.stem + 
             else:
                 self.new_filename = self.path.stem.removesuffix('.encrypted') + self.path.suffix
             try:
                 self.new_path = self.path.with_name(self.new_filename)
-                self.path.rename(self.new_path) # and if destination alr exists?
-            except FileExistsError:
-                print('Error: File exists')
+                if self.new_path.exists():
+                    x = -1
+                    while self.new_path.exists():
+                        x += 1
+                        self.new_filename = self.path.stem + str(x) + '.encrypted' + self.path.suffix
+                        self.new_path = self.path.with_name(self.new_filename)
+                self.path.rename(self.new_path) 
             self.path = self.new_path
             self.filename = self.new_filename
-            self.encrypted = not self.encrypted
         except OSError: 
             Input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
             if Input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
@@ -107,7 +110,7 @@ class FileConverter(ABC):
             else:
                   raise InputUnrecognisedError
         
-    @abstractmethod #just experimenting, no subclass yet
+    @abstractmethod #just experimenting
     def __str__(self):
         pass
 
@@ -115,42 +118,37 @@ class FileConverter(ABC):
     def decrypt(self):
         """The function decrypts files contents of a given file.
     
-        Exceptions raised: FileNotFoundError, OSError,  scrypt.error
+        Exceptions raised: FileNotFoundError, OSError,  scrypt.error 
         """       
-        try:
-            with self.path.open('rb') as file:
-                contents = file.read()
-            self.second_copy = contents
-        except FileNotFoundError:
-            print('Error: The file that you are trying to decrypt does not exist.')
-            return
+
+        if  not self.path.stem.endswith('.encrypted'):
+            raise FileIsNotEncryptedError
+                  
+        with self.path.open('rb') as file:
+            contents = file.read()
+        self.second_copy = contents
             
         if len(contents):
             try:
-                new_contents = scrypt.decrypt(contents, self.password) 
-                with open(tempfile.TemporaryFile(mode='wb')) as file:
-                    file.write(new_contents)
-                         
-                with open(tempfile.TemporaryFile(mode='rb')) as file:
+                contents = scrypt.decrypt(contents, self.password) 
+                with tempfile.TemporaryFile(mode='w+b') as file:
+                    file.write(contents)
+                    file.seek(0)
                     content_check = file.read()
-                    if content_check != new_contents:
+                if content_check != contents:
                          raise FileWritingError
-                self.encrypted = False
-
                 with self.path.open('wb') as file:
-                    file.write(new_contents)
-            except scrypt.error as e:
-                print(f'Error: {e.args}')
+                    file.write(contents)
+                self.encrypted = False
+            except (scrypt.error, FileWritingError) as Error:
+                print(f'Error: {Error.args}, attempting to restore original contents')
                 with self.path.open('wb') as file:
                     file.write(self.second_copy)
                 return
                 
         else:
             raise FileEmptyError
-        try:
-            self.rename()
-        except FileNotFoundError as e:
-                print(e.args)
+        self.rename()
 
     @format_
     def encrypt(self):
@@ -158,13 +156,13 @@ class FileConverter(ABC):
     
         Exceptions raised: FileNotFoundError, PermissionError, OSError, scrypt.error
         """
+
+        if self.path.stem.endswith('.encrypted'):
+            raise FileIsAlreadyEncryptedError
         try:
             with self.path.open('rb') as file:
-                contents = file.read() # and if file is alr encrypted?
+                contents = file.read() 
             self.second_copy = contents
-        except FileNotFoundError:
-            print('Error: The file that you are trying to encrypt does not exist.')
-            return
         except PermissionError:
             print('Error: The file does not seem to be compatible with reading.')
             return
@@ -176,26 +174,25 @@ class FileConverter(ABC):
             return
             
         try:
-            with open(tempfile.TemporaryFile(mode='wb')) as file:
-                file.write(new_contents)
-                         
-            with open(tempfile.TemporaryFile(mode='rb')) as file:
+            with tempfile.TemporaryFile(mode='w+b') as file:
+                file.write(contents)
+                file.seek(0)
                 content_check = file.read()
-                if content_check != new_contents:
-                     raise FileWritingError
-            self.encrypted = True
+            if content_check != contents:
+                 raise FileWritingError
             with self.path.open('wb') as file:
                 file.write(contents)
-        except OSError as e:
-            print(f"Error: {e.args}, attempting to restore file's original contents")
+            self.encrypted = True
+        except (OSError, FileWritingError) as Error:
+            print(f"Error: {Error.args}, attempting to restore file's original contents")
             with self.path.open('wb') as file:
                 file.write(self.second_copy)
             return
-        try:
-            self.rename()
-        except FileNotFoundError as e:
-                print(e.args)
+        self.rename()
 
+class MyFileConverter(FileConverter):
+    def __str__(self):
+        return str(self.path) + ' labubu'
 
 #my (out of school)freinds just took photos of each other and shoved them in AI to make them bald and now they are crying about it AND I HAVE TO SOLVE THIS MESS
 
