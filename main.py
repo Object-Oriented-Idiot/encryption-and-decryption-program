@@ -47,7 +47,7 @@ class FileIsNotEncryptedError(CustomError): pass
 def format_(function):
     """This decorator(function) notifies the user when the process of en/decryption starts and finished.
 
-    bruh i hate docstrings
+    bruh i hate docstrings im not writing any more of them
     """
     @wraps(function)
     def inner(self):
@@ -62,10 +62,6 @@ def format_(function):
     return inner
 
 class FileConverter(ABC): 
-    """This class takes a file and is able to encrypt and decrypt it.
-
-    Public methods: encrypt, decrypt, rename
-    """
     def __init__(self, filename):
         self.filename = filename 
         self.path = Path(self.filename).resolve()
@@ -116,10 +112,6 @@ class FileConverter(ABC):
 
     @format_
     def decrypt(self):
-        """The function decrypts files contents of a given file.
-    
-        Exceptions raised: FileNotFoundError, OSError,  scrypt.error 
-        """       
 
         if  not self.path.stem.endswith('.encrypted'):
             raise FileIsNotEncryptedError
@@ -152,10 +144,6 @@ class FileConverter(ABC):
 
     @format_
     def encrypt(self):
-        """The function encrypts files contents of a given file.
-    
-        Exceptions raised: FileNotFoundError, PermissionError, OSError, scrypt.error
-        """
 
         if self.path.stem.endswith('.encrypted'):
             raise FileIsAlreadyEncryptedError
