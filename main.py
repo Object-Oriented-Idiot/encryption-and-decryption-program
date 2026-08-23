@@ -82,6 +82,10 @@ class FileConverter(ABC):
         try:
             if self.encrypted:
                 self.new_filename = self.path.stem + '.encrypted' + self.path.suffix
+                      if self.new_path.exists:
+                          while self.new_path.exists:
+                                    for x in randge
+                             self.new_filename = self.path.stem + 
             else:
                 self.new_filename = self.path.stem.removesuffix('.encrypted') + self.path.suffix
             try:
