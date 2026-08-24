@@ -7,10 +7,11 @@ print('this is a toy project which is not secure, do not test this on files you 
 import re
 import scrypt
 import tempfile
+from pathlib import Path
+from copy import deepcopy
 from getpass import getpass
 from functools import wraps
 from abc import ABC, abstractmethod
-from pathlib import Path
 
 
 SUPPORTED_FILE_ENDING_TYPES = ( '.txt', '.csv', '.json',
@@ -130,7 +131,7 @@ class FileConverter(ABC):
                   
         with self.path.open('rb') as file:
             contents = file.read()
-        self.second_copy = contents
+        self.second_copy = deepcopy(contents)
             
         if len(contents):
             try:
@@ -165,7 +166,7 @@ class FileConverter(ABC):
         try:
             with self.path.open('rb') as file:
                 contents = file.read() 
-            self.second_copy = contents
+            self.second_copy = deepcopy(contents)
         except PermissionError:
             print('Error: The file does not seem to be compatible with reading.')
             return
@@ -200,4 +201,5 @@ class MyFileConverter(FileConverter):
     def __str__(self):
         return str(self.path) + ' labubu'
 
-      
+
+
