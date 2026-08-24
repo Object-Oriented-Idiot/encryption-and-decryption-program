@@ -1,5 +1,4 @@
-#!!! does not follow PEP8's recomendation on docstring and line length
-#actually its not PEP8/257 aligned(ive changed it too much and ignored PEP8/257 in the process) never mind...
+#!!! does not follow PEP8/257
 
 """This program is able to take a file and en/decrypt its contents."""
 
@@ -17,7 +16,7 @@ from pathlib import Path
 SUPPORTED_FILE_ENDING_TYPES = ( '.txt', '.csv', '.json',
                                 '.xml', '.docx', '.rtf', 
                                 '.md', '.png', '.zip', 
-                                '.pdf') #used a tuple becuse i never use tuples normally and i dont want tuples to feel left out 
+                                '.pdf') 
 
 class exceptions(type): #im bored ok?
     list_of_custom_exceptions = []
@@ -34,9 +33,8 @@ class CustomError(Exception, metaclass=exceptions):
         self.errormsg = (' '.join(self.errormsg)).lower()
         super().__init__(self.errormsg)
 
-#does this work?
-#
-#justicefortuples
+
+
 #ERROR_NAME = ('FileTypeUnsupportedError', 'FileEmptyError', 'InputUnrecognisedError', 'ProcessingError', 'FileWritingError', 'FileIsAlreadyEncryptedError', 'FileIsNotEncryptedError')
 #
 #for a in range(7):
@@ -203,4 +201,3 @@ class MyFileConverter(FileConverter):
         return str(self.path) + ' labubu'
 
       
-#my (out of school)freinds just took photos of each other and shoved them in AI to make them bald and now they are crying about it AND I HAVE TO SOLVE THIS MESS
