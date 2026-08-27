@@ -112,7 +112,9 @@ class FileConverter(ABC):
             Input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
             if Input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
                          'help me my dog is chasing me on two feet becuse i ate its food and now it has red eyes im really scared',
-                         'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp']:
+                         'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp',
+                        'i\'m happy finally somone is looking at my code, so thank you :)'
+                        ]:
                   self.rename()
             elif Input.lower() in [ 'n', 'no']:
                   return
