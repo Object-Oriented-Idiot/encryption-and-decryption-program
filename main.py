@@ -37,7 +37,7 @@ class CustomError(Exception, metaclass=exceptions):
 
 
 #ERROR_NAME = ('FileTypeUnsupportedError', 'FileEmptyError', 'InputUnrecognisedError', 'ProcessingError', 'FileWritingError', 'FileIsAlreadyEncryptedError', 'FileIsNotEncryptedError')
-#
+
 #for a in range(7):
 #    class error_name[a](CustomError): pass
   
