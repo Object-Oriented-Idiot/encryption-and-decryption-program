@@ -1,14 +1,14 @@
 #!!! does not follow PEP8/257
 
-"""This program is able to take a file and en/decrypt its contents."""
+"""This program is able to take an file and en/decrypt its contents."""
 
-print('this is a toy project which is not secure, do not test this on files you care about')
+print('this is a toy project which is not secure, do n\'t test this on files you care about')
 
 import re
 import scrypt
 import tempfile
 from pathlib import Path
-from copy import deepcopy
+from copy import deepcopy #i fear deepcopy is usless in this programm
 from getpass import getpass
 from functools import wraps
 from abc import ABC, abstractmethod
@@ -17,7 +17,9 @@ from abc import ABC, abstractmethod
 SUPPORTED_FILE_ENDING_TYPES = ( '.txt', '.csv', '.json',
                                 '.xml', '.docx', '.rtf', 
                                 '.md', '.png', '.zip', 
-                                '.pdf') 
+                                '.pdf') # i used a tuple becuse i never use tuples and what happens if the hates me for leaving it out? 
+                                #the tuple must be so sad that i always replace it with dictionaries....
+                                #it needs counciling
 
 class exceptions(type): #im bored ok?
     list_of_custom_exceptions = []
@@ -58,13 +60,13 @@ def format_(function):
     """
     @wraps(function)
     def inner(self):
-        print(f'{function.__name__.capitalize()}ion process started- this may take some time.')
+        print( if function.__name__ == 'decrypt': 'decryption'; else: 'encryption', ' process started- this may take some time.')
         try:
             result = function(self)
         except Exception as Error:
             raise ProcessingError from Error
         finally:
-            print(f'{function.__name__.capitalize()}ion process ended- thank you for waiting.')
+            print(f'{function.__name__.capitalize()}ion process ended- thank yew for waiting.')
         return result
     return inner
 
@@ -85,7 +87,7 @@ class FileConverter(ABC):
           
         self.password = getpass('Please enter a password you can use to accsess your file.')
         while not self.password:
-            self.password = getpass('Please enter a password you can use to accsess your file which is not empty.')
+            self.password = getpass('Please enter a password you can use to acses your file which is not empty.')
 
 
     def rename(self): 
@@ -112,8 +114,8 @@ class FileConverter(ABC):
             Input = str(input('Error:Rename failed.\n Would you like to try again?(Y/N)'))
             if Input in ['yeah', ' yes', 'uhm sure ig', ' YES', 'yea', 'mhm', 'YEYSYEYSYYEYSYEYSYEYSYYEYSYYEYSYEYYS',
                          'help me my dog is chasing me on two feet becuse i ate its food and now it has red eyes im really scared',
-                         'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp',
-                        'i\'m happy finally somone is looking at my code, so thank you :)'
+                         'Yes', 'yEs','y', 'Y', 'yeS', 'YeS', 'yES', 'YEs', 'yes bbg', 'VEGETABLES.', 'zeep zorp', 'EUREKA!',
+                        'i\'m happy finally somone is looking at my code, so thank you :)', 'im a chud im a chud im a fat little chud'
                         ]:
                   self.rename()
             elif Input.lower() in [ 'n', 'no']:
@@ -151,7 +153,7 @@ class FileConverter(ABC):
                 self.encrypted = False
               
             except (scrypt.error, FileWritingError) as Error:
-                print(f'Error: {Error.args}, attempting to restore original contents')
+                print(f'Error: {Error.args}, attempting to restore original content\'s')
                 with self.path.open('wb') as file:
                     file.write(self.second_copy)
                 return
@@ -162,7 +164,7 @@ class FileConverter(ABC):
     @format_
     def encrypt(self):
 
-        if self.path.stem.endswith('.encrypted'):
+        if self.path.stem.endswith('.encrypted'):# hiba says:jubhgyftfrdrseses :)
             raise FileIsAlreadyEncryptedError
           
         try:
@@ -202,5 +204,5 @@ class MyFileConverter(FileConverter):
     def __str__(self):
         return str(self.path) + ' labubu'
 
-
-
+#user has femboy potential but toby(stupid cornball) does not (codenames)
+##HIBA HAS THE MOST FEMBOY POTENTIAL EVER
