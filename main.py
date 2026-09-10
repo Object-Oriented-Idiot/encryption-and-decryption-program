@@ -1,12 +1,11 @@
 #!!! does not follow PEP8/257
+# cleaned up and better version: https://github.com/Object-Oriented-Idiot/encryption-and-decryption-program/blob/e25b0d663a678f9821b2aade44204734f8e08859/main.py
 
 """This program is able to take an file and en/decrypt its contents."""
 
 print('this is a toy project which is not secure, do n\'t test this on files you care about unless your a script kiddie who has no life out of running random scripts that you dont understand LARPER get back to coding')
 
-import re
-import scrypt 
-import tempfile
+import re, scrypt, tempfile
 from pathlib import Path
 from copy import deepcopy #i fear deepcopy is usless in this programm just like telnet
 from getpass import getpass
@@ -191,7 +190,7 @@ class FileConverter(ABC):
 
 class MyFileConverter(FileConverter):
     def __str__(self):
-        return str(self.path) + ' labubu meow meow meow meow im a furry lmfao jk '
+        return str(self.path) + ' labubu lmfao lmfao lmfao lmFAO IJBOL-ROF-LMFAO-IPML bcz of my bad error handling its so bad its not even funny anymore'
 
 
 print('im sooooooooooo bored no one will look at my code :(' for i in range(67))
