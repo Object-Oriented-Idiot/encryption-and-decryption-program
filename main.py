@@ -1,4 +1,5 @@
-#!!! does not follow PEP8/257
+#!!! does not follow PEP8/25
+#AK-47 SHOULD BE REPORTED TO SAFEGUARDING AND THEY SHOULD GET A HOUR AND IK THEY ARE SEEING THIS :3
 # cleaned up and better version: https://github.com/Object-Oriented-Idiot/encryption-and-decryption-program/blob/e25b0d663a678f9821b2aade44204734f8e08859/main.py
 
 """This program is able to take an file and en/decrypt its contents."""
