@@ -11,7 +11,7 @@ from pathlib import Path
 from copy import deepcopy #i fear deepcopy is usless in this programm just like telnet
 from getpass import getpass
 from functools import wraps
-from abc import ABC, abstractmethod
+
 
 
 SUPPORTED_FILE_ENDING_TYPES = ( '.txt', '.csv', '.json',
@@ -72,7 +72,7 @@ def format_(function):
     return inner
 
 
-class FileConverter(ABC): 
+class FileConverter(): 
     def __init__(self, filename):
         self.filename = filename 
         self.path = Path(self.filename).resolve()
@@ -116,9 +116,6 @@ class FileConverter(ABC):
             else:
                   raise InputUnrecognisedError
         
-    @abstractmethod #just experimenting
-    def __str__(self):
-        pass
 
     @format_
     def decrypt(self):
@@ -189,10 +186,3 @@ class FileConverter(ABC):
             return
         self.rename()
 
-class MyFileConverter(FileConverter):
-    def __str__(self):
-        return str(self.path) + ' labubu lmfao lmfao lmfao lmFAO IJBOL-ROF-LMFAO-IPML bcz of my bad error handling its so bad its not even funny anymore'
-
-
-print('im sooooooooooo bored no one will look at my code :(' for i in range(67))
-print('i need a coffee.')
